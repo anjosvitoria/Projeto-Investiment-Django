@@ -60,6 +60,8 @@ def listar_empresas(request):
         empresas = Empresas.objects.filter(user=request.user)
         return render(request, 'listar_empresas.html',{'empresas':empresas})
 
+def empresa(request, id):
+    
 
 
 
