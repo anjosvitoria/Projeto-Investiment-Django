@@ -21,12 +21,12 @@
  {% endfor %}
  {% endif %}
  <div class="col-md-3">
- <img src="#" class="foto-empresa" alt="">
+   {{empresa.logo.url}}
+ <img src="{{empresa.logo.url}}" class="foto-empresa" alt="">
  </div>
  <div class="col-md">
-    {{empresa.logo}}
  <h3>Percentual captado</h3>
- <h2>Pythonando</h2>
+ <h2>{{empresa.nome}}</h2>
 
  </div>
 
