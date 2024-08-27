@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect
-from .models import Empresas
+from .models import Empresas, Documento
 from django.contrib import messages 
 from django.contrib.messages import constants
+from django.http import HttpResponse
 
 # Create your views here.
 def cadastrar_empresa(request):
@@ -66,6 +67,20 @@ def empresa(request, id):
         return render(request, 'empresa.html', {'empresa': empresa})
     
 
-
-
-        
+def add_doc(request, id):
+    empresa = Empresas.objects.get(id=id)
+    titulo = request.POST.get('titulo')
+    arquivo = request.FILES.get('arquivo')
+    
+    documento = Documento(
+        empresa=empresa,
+        titulo=titulo,
+        arquivo=arquivo
+    )
+    
+    documento.save()
+    
+    messages.add_message(request, constants.SUCCESS, 'arquivo cadastrado com sucesso')
+    return redirect('/empresarios/empresa/{id}')
+    
+    
