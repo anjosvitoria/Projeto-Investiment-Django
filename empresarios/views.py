@@ -63,14 +63,32 @@ def listar_empresas(request):
 
 def empresa(request, id):
     empresa = Empresas.objects.get(id=id)
+    if empresa.user != request.user:
+         messages.add_message(request, constants.ERROR, 'essa empresa não é sua')
+         return redirect(f'/empresarios/listar_empresas')
+    
     if request.method == "GET":
         return render(request, 'empresa.html', {'empresa': empresa})
+    
     
 
 def add_doc(request, id):
     empresa = Empresas.objects.get(id=id)
     titulo = request.POST.get('titulo')
     arquivo = request.FILES.get('arquivo')
+    extensao = arquivo.name.split('.')
+    
+    if empresa.user != request.user:
+         messages.add_message(request, constants.ERROR, 'essa empresa não é sua')
+         return redirect(f'/empresarios/listar_empresas')
+    
+    if extensao[1] != 'pdf':
+        messages.add_message(request, constants.ERROR, 'envie apensas PDFs')
+        return redirect(f'/empresarios/empresa/{id}')
+    
+    if not arquivo:
+        messages.add_message(request, constants.ERROR, 'envie um arquivo.')
+        return redirect(f'/empresarios/empresa/{id}')
     
     documento = Documento(
         empresa=empresa,
@@ -81,6 +99,6 @@ def add_doc(request, id):
     documento.save()
     
     messages.add_message(request, constants.SUCCESS, 'arquivo cadastrado com sucesso')
-    return redirect('/empresarios/empresa/{id}')
+    return redirect(f'/empresarios/empresa/{id}')
     
     
