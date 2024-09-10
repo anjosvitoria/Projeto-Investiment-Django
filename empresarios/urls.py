@@ -11,5 +11,5 @@ urlpatterns = [
     path('add_doc/<int:id>', views.add_doc, name="add_doc"),
     path('excluir_dc/<int:id>', views.excluir_dc, name="excluir_dc"),
     path('add_metrica/<int:id>', views.add_metrica, name="add_metrica"),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] 
 
