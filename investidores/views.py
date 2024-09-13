@@ -27,4 +27,5 @@ def sugestao(request):
     return render(request, 'sugestao.html', {'empresas': empresas_selecionadas, 'areas': areas})
 
 def ver_empresa(request, id):
-    return   
+    empresa = Empresas.objects.get(id=id)
+    return  render(request, 'ver_empresa.html',{'emrpesa': empresa})
