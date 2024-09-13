@@ -7,10 +7,21 @@ def sugestao(request):
         return render(request, 'sugestao.html', {'areas: areas'})
     elif request.method == 'POST':
         tipo = request.POST.get('tipo')
-        area = request.POST.get('area')
+        area = request.POST.getlist ('area')
         valor = request.POST.get('valor')
     
     if tipo == 'C':
         empresas = Empresas.objects.filter(tempo_existencia='+5').filter(estagio='E')
     elif tipo = 'D'
-    empresas = Empresas.objects.filter(tempo_existencia__in=['-6', '+6', '+1']).exclude(estagio='E')
+        empresas = Empresas.objects.filter(tempo_existencia__in=['-6', '+6', '+1']).exclude(estagio='E')
+        
+    empresas = empresas. filter(area__in=area)
+    
+    empresas_selecionadas = []
+    for empresa in empresas:
+        percentual = float(valor) * 100 / float(empresa.valuation)
+        if percentual >= 1:
+            empresas_selecionadas.append(empresa)
+    return render(request, 'sugestao.html', {'empresas': empresas_selecionadas, 'areas': areas})
+
+            
