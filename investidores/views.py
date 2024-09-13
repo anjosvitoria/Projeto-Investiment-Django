@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from empresarios.models import Empresas
+from empresarios.models import Empresas, Documento
 # Create your views here.
 def sugestao(request):
     if not request.user.is_autenticated:
@@ -28,4 +28,5 @@ def sugestao(request):
 
 def ver_empresa(request, id):
     empresa = Empresas.objects.get(id=id)
-    return  render(request, 'ver_empresa.html',{'emrpesa': empresa})
+    documentos = Documento.objects.filter(empresa=empresa)
+    return  render(request, 'ver_empresa.html',{'emrpesa': empresa, 'documentos': documentos})
