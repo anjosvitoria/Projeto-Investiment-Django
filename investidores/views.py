@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from empresarios.models import Empresas
 # Create your views here.
 def sugestao(request):
+    if not request.user.is_autenticated:
+        return redirect('/usuarios/logar')
     areas = Empresas.area_choices
     if request.method == 'GET':
         return render(request, 'sugestao.html', {'areas: areas'})
