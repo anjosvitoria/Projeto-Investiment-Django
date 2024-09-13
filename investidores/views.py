@@ -26,4 +26,5 @@ def sugestao(request):
             empresas_selecionadas.append(empresa)
     return render(request, 'sugestao.html', {'empresas': empresas_selecionadas, 'areas': areas})
 
-            
+def ver_empresa(request, id):
+    return   
