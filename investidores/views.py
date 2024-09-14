@@ -32,3 +32,6 @@ def ver_empresa(request, id):
     documentos = Documento.objects.filter(empresa=empresa)
     #todo: listar as metricas dinamicamente  
     return  render(request, 'ver_empresa.html',{'emrpesa': empresa, 'documentos': documentos})
+
+def realizar_proposta(request, id):
+    return

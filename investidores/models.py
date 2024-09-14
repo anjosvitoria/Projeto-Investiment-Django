@@ -1,5 +1,9 @@
 from django.db import models
+from empresarios.models import Empresas
+from django.contrib.auth.models import User
 
+#roda o python manage.py makemigrations
+#python manage.py migrate
 # Create your models here.
 class PropostaInvestimento(models.Model):
     status_choices = (
