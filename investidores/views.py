@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from empresarios.models import Empresas, Documento
+from .models import PropostaInvestimento
 # Create your views here.
 def sugestao(request):
     if not request.user.is_autenticated:
@@ -34,4 +35,17 @@ def ver_empresa(request, id):
     return  render(request, 'ver_empresa.html',{'emrpesa': empresa, 'documentos': documentos})
 
 def realizar_proposta(request, id):
-    return
+    valor = request.POST.get('valor')
+    percentual = request.POST.get('percentual')
+    empresa = Empresa.objects.get(id=id)
+    
+    pi = PropostaInvestimento(
+        valor = valor,
+        percetual = percentual,
+        empresa = empresa,
+        investidor = request.user
+    )
+    
+    pi.save()
+    return redirect(f'/investidores/assinar_contrato/{pi.id}') #vai da erro por enquanto
+    
