@@ -3,6 +3,7 @@ from .models import Empresas, Documento, Metricas
 from django.contrib import messages 
 from django.contrib.messages import constants
 from django.http import HttpResponse
+from investidores.models import PropostaInvestimento
 
 # Create your views here.
 def cadastrar_empresa(request):
@@ -69,7 +70,10 @@ def empresa(request, id):
     
     if request.method == "GET":
         documentos = Documento.objects.filter(empresa=empresa)
-        return render(request, 'empresa.html', {'empresa': empresa, 'documentos': documentos})
+        propostas_investimentos = PropostaInvestimento.objects.filter(empresa = empresa)
+        
+        proposta_investimentos_enviada = propostas_investimentos.filter(status = 'PE')
+        return render(request, 'empresa.html', {'empresa': empresa, 'documentos': documentos, 'proposta_investimentos_enviada':proposta_investimentos_enviada})
     
     
 
@@ -122,7 +126,7 @@ def add_metrica(request, id):
         titulo=titulo,
         valor=valor
     )
-    metrica.save()
+    metricas.save()
     
     messages.add.message(request, constants.SUCESS, "metrica cadastrada com sucesso")
     return redirect(f'/empresarios/{empresa.id}')

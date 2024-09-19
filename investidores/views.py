@@ -18,7 +18,7 @@ def sugestao(request):
     
     if tipo == 'C':
         empresas = Empresas.objects.filter(tempo_existencia='+5').filter(estagio='E')
-    elif tipo = 'D'
+    elif tipo == 'D':
         empresas = Empresas.objects.filter(tempo_existencia__in=['-6', '+6', '+1']).exclude(estagio='E')
         #todo: tipo genérico ex: tipo mediano
         
@@ -40,22 +40,22 @@ def ver_empresa(request, id):
 def realizar_proposta(request, id):
     valor = request.POST.get('valor')
     percentual = request.POST.get('percentual')
-    empresa = Empresa.objects.get(id=id)
+    empresa = Empresas.objects.get(id=id)
     
-     propostas_aceitas = PropostaInvestimento.objects.filter(empresa=empresa).filter(status=PA)
+    propostas_aceitas = PropostaInvestimento.objects.filter(empresa=empresa).filter(status='PA')
      
-     total=0
-     for pa in propostas_aceitas:
+    total=0
+    for pa in propostas_aceitas:
         total = total + pa.percentual
         
-    if total + float(percentual) > empresa.percentual_equity
-        messagens.add_messages(request, constants.WARNING, 'o percentual solicitado ultrapassa o percentual maximo')
+    if total + float(percentual) > empresa.percentual_equity:
+        messages.add_messages(request, constants.WARNING, 'o percentual solicitado ultrapassa o percentual maximo')
         return redirect(f'/investidores/ver_empresas/{id}')
     
     valuation = (100 * int(valor))/ int(percentual)
     
     if valuation < (int(empresa.valuation / 2)):
-        messagens.add_messages(request, constants.WARNING, f'seu valuation proposto foi R${valuation} e deve ser no minimo {empresa.valuation}')
+        messages.add_messages(request, constants.WARNING, f'seu valuation proposto foi R${valuation} e deve ser no minimo {empresa.valuation}')
         return redirect(f'/investidores/ver_empresas/{id}')
     
     pi = PropostaInvestimento(
@@ -70,17 +70,17 @@ def realizar_proposta(request, id):
     
 def assinar_contrato(request, id):
     pi = PropostaInvestimento.objects.get(id=id)
-    if pi.status != 'AS'
+    if pi.status != 'AS':
         raise Http404()
     
     if request.method == "GET":
         return render(request, 'assinar_contrato.html', { 'pi':pi})
-    elife request.method == 'POST':
+    elif request.method == 'POST':
         selfie = request.FILES.get('selfie')
         rg = request.FILES.get('rg')
         
         pi.selfie = selfie
-        pe.rg = rg
+        pi.rg = rg
         pi.status = 'PE'
         pi.save()
         messages.add_message(request, constants.SUCCESS, f'Contrato assinado com sucesso, sua proposta foi enviada a empresa.')
