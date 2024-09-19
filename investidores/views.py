@@ -75,3 +75,11 @@ def assinar_contrato(request, id):
     
     if request.method == "GET":
         return render(request, 'assinar_contrato.html', { 'pi':pi})
+    elife request.method == 'POST':
+        selfie = request.FILES.get('selfie')
+        rg = request.FILES.get('rg')
+        
+        pi.selfie = selfie
+        pe.rg = rg
+        pi.status = 'PE'
+        pi.save()
