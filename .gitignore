@@ -1,5 +1,6 @@
-## Ignorar pastas de dependências
+# Ignorar arquivos Python compilados
+*.pyc
+__pycache__/
+
+# Ignorar ambientes virtuais
 venv/
-.env/
-/db.sqlite3
-/manage.py
