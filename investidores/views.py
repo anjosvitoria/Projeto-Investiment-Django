@@ -3,6 +3,7 @@ from empresarios.models import Empresas, Documento
 from .models import PropostaInvestimento
 from django.contrib import messages
 from django.contrib.messages import constants
+from django.http import HttpResponse, Http404
 # Create your views here.
 def sugestao(request):
     if not request.user.is_autenticated:
@@ -51,6 +52,12 @@ def realizar_proposta(request, id):
         messagens.add_messages(request, constants.WARNING, 'o percentual solicitado ultrapassa o percentual maximo')
         return redirect(f'/investidores/ver_empresas/{id}')
     
+    valuation = (100 * int(valor))/ int(percentual)
+    
+    if valuation < (int(empresa.valuation / 2)):
+        messagens.add_messages(request, constants.WARNING, f'seu valuation proposto foi R${valuation} e deve ser no minimo {empresa.valuation}')
+        return redirect(f'/investidores/ver_empresas/{id}')
+    
     pi = PropostaInvestimento(
         valor = valor,
         percetual = percentual,
@@ -61,4 +68,10 @@ def realizar_proposta(request, id):
     pi.save()
     return redirect(f'/investidores/assinar_contrato/{pi.id}') #vai da erro por enquanto
     
+def assinar_contrato(request, id):
+    pi = PropostaInvestimento.objects.get(id=id)
+    if pi.status != 'AS'
+        raise Http404()
     
+    if request.method == "GET":
+        return render(request, 'assinar_contrato.html', {'id': id})
