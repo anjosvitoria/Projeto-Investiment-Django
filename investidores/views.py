@@ -74,4 +74,4 @@ def assinar_contrato(request, id):
         raise Http404()
     
     if request.method == "GET":
-        return render(request, 'assinar_contrato.html', {'id': id})
+        return render(request, 'assinar_contrato.html', { 'pi':pi})
