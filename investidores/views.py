@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from empresarios.models import Empresas, Documento
 from .models import PropostaInvestimento
+from django.contrib import messages
+from django.contrib.messages import constants
 # Create your views here.
 def sugestao(request):
     if not request.user.is_autenticated:
@@ -39,6 +41,16 @@ def realizar_proposta(request, id):
     percentual = request.POST.get('percentual')
     empresa = Empresa.objects.get(id=id)
     
+     propostas_aceitas = PropostaInvestimento.objects.filter(empresa=empresa).filter(status=PA)
+     
+     total=0
+     for pa in propostas_aceitas:
+        total = total + pa.percentual
+        
+    if total + float(percentual) > empresa.percentual_equity
+        messagens.add_messages(request, constants.WARNING, 'o percentual solicitado ultrapassa o percentual maximo')
+        return redirect(f'/investidores/ver_empresas/{id}')
+    
     pi = PropostaInvestimento(
         valor = valor,
         percetual = percentual,
@@ -48,4 +60,5 @@ def realizar_proposta(request, id):
     
     pi.save()
     return redirect(f'/investidores/assinar_contrato/{pi.id}') #vai da erro por enquanto
+    
     
