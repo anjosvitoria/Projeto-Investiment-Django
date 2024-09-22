@@ -162,3 +162,8 @@ cython_debug/
 #.idea/
 /media
 /venv
+venv
+*.sqlite3
+/db.sqlite3
+/*.sqlite3
+media
