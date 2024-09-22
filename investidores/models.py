@@ -22,3 +22,9 @@ class PropostaInvestimento(models.Model):
     
     def __str__(self):
         return str(self.valor)
+    
+    
+    @property
+    def valuation(self):
+        return(100 * float(self.valor)) / float(self.percentual)
+    
